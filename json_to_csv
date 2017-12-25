@@ -1,0 +1,73 @@
+function convertToCSV(objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = '';
+
+    for (var i = 0; i < array.length; i++) {
+        var line = '';
+        for (var index in array[i]) {
+            if (line != '') line += ','
+
+            line += array[i][index];
+        }
+
+        str += line + '\r\n';
+    }
+
+    return str;
+}
+
+function exportCSVFile(headers, items, fileTitle) {
+    if (headers) {
+        items.unshift(headers);
+    }
+
+    // Convert Object to JSON
+    var jsonObject = JSON.stringify(items);
+
+    var csv = this.convertToCSV(jsonObject);
+
+    var exportedFilenmae = fileTitle + '.csv' || 'export.csv';
+
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    if (navigator.msSaveBlob) { // IE 10+
+        navigator.msSaveBlob(blob, exportedFilenmae);
+    } else {
+        var link = document.createElement("a");
+        if (link.download !== undefined) { // feature detection
+            // Browsers that support HTML5 download attribute
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", exportedFilenmae);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+}
+
+$("#csv").on("click",function(){
+    var outputFile = window.prompt("Name your file name") || 'export';
+    // outputFile =outputFile.replace('csv','')+'.csv';
+    var headers = {count : "Sr. No", user_id :"User ID", name :"User Name" ,totalAmount :'Total Amount'},
+    jsonData =[{count :'01', user_id : '12', name :"kumar Gaurav" , totalAmount :"$500"},
+                {count :'02', user_id : '13', name :"kumar " , totalAmount :"$700"},
+                {count :'03', user_id : '12', name :"kumar Gaurav" , totalAmount :"$500"},
+                {count :'04', user_id : '12', name :"kumar Gaurav" , totalAmount :"$500"},
+                {count :'05', user_id : '12', name :"kumar Gaurav" , totalAmount :"$500"},
+                {count :'06', user_id : '12', name :"kumar Gaurav" , totalAmount :"$500"},
+                {count :'07', user_id : '12', name :"kumar Gaurav" , totalAmount :"$500"},
+                {count :'08', user_id : '12', name :"kumar Gaurav" , totalAmount :"$500"},
+                {count :'09', user_id : '12', name :"kumar Gaurav" , totalAmount :"$500"},
+                {count :'10', user_id : '12', name :"kumar Gaurav" , totalAmount :"$500"},
+                {count :'11', user_id : '12', name :"kumar Gaurav" , totalAmount :"$500"},
+                {count :'12', user_id : '12', name :"kumar Gaurav" , totalAmount :"$500"},
+                {count :'13', user_id : '12', name :"kumar Gaurav" , totalAmount :"$500"},
+                {count :'14', user_id : '12', name :"kumar Gaurav" , totalAmount :"$500"},
+                {count :'15', user_id : '12', name :"kumar Gaurav" , totalAmount :"$500"},
+                {count :'16', user_id : '12', name :"kumar Gaurav" , totalAmount :"$500"},
+    ];
+    
+    // call the exportCSVFile() function to process the JSON and trigger the download
+    exportCSVFile(newHeaders, jsonData, outputFile);
+});
