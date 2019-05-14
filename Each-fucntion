@@ -1,0 +1,15 @@
+jQuery(document).ready(() => {
+	    // let e;e=jQuery(".wp-block-preformatted").parent().attr("class");let r=jQuery("."+e+" pre").html();jQuery("."+e+" pre").detach(),jQuery("."+e).html(r)
+	    let parent, child;
+	    parent = jQuery(".wp-block-preformatted").parent().attr("class"), child = jQuery(".wp-block-preformatted").attr("class");
+	    let parenthtml = jQuery("." + parent + " pre").html();
+	    jQuery("." + parent + " pre").detach(), jQuery("." + parent).append("<div class='" + child + "'>" + parenthtml + "</div>");
+	    let data = jQuery("body .wp-block-preformatted ul li").hover(() => jQuery(this).attr("class"));
+	    jQuery.each(data, (e, t) => {
+	        t.addEventListener("mouseenter", () => {
+	            t.setAttribute("class", "product-hover")
+	        }), t.addEventListener("mouseleave", () => {
+	            t.removeAttribute("class", "product-hover")
+	        })
+	    });
+	});
